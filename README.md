@@ -183,7 +183,8 @@ flowchart TD
 
 ### Pré-requisitos
 
-- Python 3.13+
+- Python 3.12+
+- [uv](https://docs.astral.sh/uv/) - Gerenciador de pacotes Python moderno
 - Node.js 18+
 - PostgreSQL database (já configurado no projeto)
 - OpenAI API Key
@@ -197,15 +198,19 @@ cd crime-analytics-rs
 
 ### 2️⃣ Configure o Backend
 
-**Crie o ambiente virtual:**
+**Instale as dependências com uv:**
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+# Instala uv se ainda não tiver (macOS/Linux)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# Windows: powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Cria ambiente virtual e instala todas as dependências
+uv sync
 ```
 
-**Instale as dependências:**
+**Ative o ambiente virtual:**
 ```bash
-pip install -r requirements.txt
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 ```
 
 **Configure as variáveis de ambiente:**
@@ -245,7 +250,7 @@ cd ..
 **Terminal 1 - Backend:**
 ```bash
 cd backend
-source ../venv/bin/activate  # Windows: ..\venv\Scripts\activate
+source ../.venv/bin/activate  # Windows: ..\.venv\Scripts\activate
 python main.py
 ```
 
@@ -327,13 +332,14 @@ npm run dev
 
 | Tecnologia | Versão | Descrição |
 |------------|--------|-----------|
-| **Python** | 3.13 | Linguagem principal |
-| **FastAPI** | 0.115.0 | Framework web moderno |
+| **Python** | 3.12+ | Linguagem principal |
+| **uv** | Latest | Gerenciador de pacotes Python ultra-rápido |
+| **FastAPI** | 0.115.0+ | Framework web moderno |
 | **PostgreSQL** | 15+ | Banco de dados |
-| **SQLAlchemy** | 2.0.36 | ORM |
-| **OpenAI SDK** | 1.12.0 | Integração GPT-4 |
-| **Pydantic** | 2.9.2 | Validação de dados |
-| **Uvicorn** | 0.32.0 | Servidor ASGI |
+| **SQLAlchemy** | 2.0.36+ | ORM |
+| **OpenAI SDK** | 1.12.0+ | Integração GPT-4 |
+| **Pydantic** | 2.9.2+ | Validação de dados |
+| **Uvicorn** | 0.32.0+ | Servidor ASGI |
 
 ### Frontend
 
@@ -394,11 +400,12 @@ crime-analytics-rs/
 │   │   └── 2025.csv.gz
 │   └── README.md              # Documentação dos dados
 │
-├── venv/                      # Virtual environment Python
+├── .venv/                     # Virtual environment Python (uv)
 │
 ├── .env                       # Variáveis de ambiente (não commitado)
 ├── .gitignore                 # Arquivos ignorados pelo Git
-├── requirements.txt           # Dependências Python
+├── pyproject.toml            # Configuração do projeto e dependências Python (uv)
+├── uv.lock                   # Lock file das dependências (uv)
 └── README.md                  # Este arquivo
 ```
 
@@ -716,7 +723,7 @@ python -c "from backend.database import DatabaseManager; db = DatabaseManager();
 **Erro:** `Module not found`
 ```bash
 # Reinstale as dependências
-pip install --force-reinstall -r requirements.txt
+uv sync --reinstall
 ```
 
 ### Frontend não inicia
@@ -790,7 +797,42 @@ DATABASE_SSLMODE=require
 
 ---
 
-## 🚀 Deploy
+## � Gerenciamento de Dependências com UV
+
+Este projeto usa **[uv](https://docs.astral.sh/uv/)** para gerenciamento de pacotes Python, oferecendo:
+
+### Vantagens do UV
+- ⚡ **10-100x mais rápido** que pip/pip-tools
+- 🔒 **Lock files confiáveis** para builds reproduzíveis
+- 🎯 **Resolução de dependências inteligente**
+- 📦 **Gerenciamento de projetos integrado**
+- 🔄 **Compatibilidade total com pip**
+
+### Comandos Úteis
+
+```bash
+# Instalar dependências
+uv sync
+
+# Adicionar nova dependência
+uv add fastapi
+
+# Adicionar dependência de desenvolvimento
+uv add --dev pytest
+
+# Remover dependência
+uv remove pandas
+
+# Executar comandos no ambiente virtual
+uv run python script.py
+
+# Atualizar dependências
+uv sync --upgrade
+```
+
+---
+
+## Deploy
 
 ### Backend (FastAPI)
 
@@ -1132,8 +1174,6 @@ Contribuições são bem-vindas! Para contribuir:
 ## 📄 Licença
 
 Este projeto é parte de uma iniciativa de análise de dados criminais para insights e visualizações.
-
----
 
 ---
 
