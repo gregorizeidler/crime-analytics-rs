@@ -1,11 +1,40 @@
 [project]
 name = "crime-analytics-rs"
 version = "0.1.0"
+description = "Intelligent System for Criminal Data Analysis of Rio Grande do Sul"
 requires-python = ">=3.12"
 dependencies = [
+    # Data Science & Notebooks
     "kaleido>=1.1.0",
     "nbformat>=5.10.4",
-    "pandas>=2.3.3",
+    "pandas>=2.2.3",
     "plotly>=6.3.1",
     "scikit-learn>=1.7.2",
+    # Backend API
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "python-dotenv>=1.0.1",
+    "psycopg2-binary>=2.9.10",
+    "sqlalchemy>=2.0.36",
+    "openai>=1.12.0",
+    "pydantic>=2.9.2",
+    "pydantic-settings>=2.6.0",
+    "python-multipart>=0.0.12",
+    "anyio>=4.11.0",
+    "httpx>=0.28.1",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["backend*"]
+exclude = ["frontend*", "datasets*", "notebooks*", "screenshots*", "RS*", "crime-analytics-rs*"]
+
+[tool.uv]
+dev-dependencies = [
+    "jupyter>=1.0.0",
+    "ipykernel>=6.0.0",
 ]
